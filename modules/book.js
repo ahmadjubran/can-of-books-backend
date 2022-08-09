@@ -32,13 +32,13 @@ function handleBooks(req, res) {
   book2.save();
   book3.save();
 
-  Book.find({}, (error, books) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.send(books);
-    }
-  });
+  // Book.find({}, (error, books) => {
+  //   if (error) {
+  //     console.log(error);
+  //   } else {
+  //     res.send(books);
+  //   }
+  // });
 }
 
 exports.handleBooks = handleBooks;
