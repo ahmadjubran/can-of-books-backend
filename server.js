@@ -7,14 +7,39 @@ const mongoose = require("mongoose");
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 const PORT = process.env.PORT || 3001;
 
 app.get("/", handleHome);
 app.get("/books", handleFindBooks);
+app.post("/books", handleAddBook);
+app.delete("/books/:id", handleDeleteBook);
 
 function handleHome(req, res) {
   res.send("Hello World");
+}
+
+function handleAddBook(req, res) {
+  const { newBook } = req.body;
+  const book = new Book(newBook);
+  book.save();
+  try {
+    res.status(200).send(book);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
+function handleDeleteBook(req, res) {
+  const id = req.params.id;
+  Book.findByIdAndDelete(id, (err, data) => {
+    if (err) {
+      res.status(500).send("Error in deleting book");
+    } else {
+      res.status(200).send(data);
+    }
+  });
 }
 
 mongoose.connect("mongodb://localhost:27017/books");
